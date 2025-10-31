@@ -302,7 +302,7 @@ function RoomChat(props) {
      <>
     <Switch>
       <Match when={!room()} >
-        You need <a href='/' >invite</a> someone to start a chat.
+        <div innerHTML={L('no_chat_tip')} />
       </Match>
       <Match when={room().state < 9} >
         <Invitation on_track={it=>wsc.emit(it)}/>

@@ -44,6 +44,7 @@ export const lang = {
     img: o =>`${o.num} image(s) selected`,
     file: o =>`${o.num} file(s) selected`,
     media_not_support: 'Oopts, Media device not supported.',
+    no_chat_tip: `You need <a href='/' >invite</a> someone to start a chat.`,
     //invitation:
     lnk_copied: 'Invitation link has copied to clipboard.',
     inv_lnk: 'Invitation Link',
@@ -82,6 +83,7 @@ export const lang = {
     img: o =>`已选择${o.num}张图片`,
     file: o =>`已选择${o.num}份文件`,
     media_not_support: '媒体设备不支持此功能',
+    no_chat_tip: `请<a href='/' >邀请</a> 某人以开启聊天.`,
     //invitation:
     lnk_copied: '邀请链接已复制到剪贴板.',
     inv_lnk: '邀请链接',
