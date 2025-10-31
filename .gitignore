@@ -1,0 +1,9 @@
+/target
+/dist
+/web/node_modules
+/log
+/db
+/res
+.DS_Store
+*.tar.gz
+*.tar

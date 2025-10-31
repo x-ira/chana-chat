@@ -1,0 +1,8 @@
+[app]
+name = "Chana"
+lan_port = 7788
+wan_port = 2010
+
+[log]
+level="info"
+# output="file"  # console | file

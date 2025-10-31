@@ -1,0 +1,41 @@
+[package]
+name = "chana"
+version = "0.1.0"
+edition = "2024"
+license = "Apache-2.0"
+keywords = ["chat", "e2ee", "anonymous", "simple", "self-hosting"]
+default-run = "chana"
+
+#[features]
+
+[dependencies]
+air = { path = "air", package = "air" }
+base = { path = "base", package = "base", features = ["req"] }
+
+log = "^0.4"
+
+axum = { version = "^0.8", features = ["ws","multipart"] }
+tower-http = { version = "^0.6", features = ["fs"] }
+
+rmp-serde = "1.3.0"
+serde = { version = "1", features = ["derive"] }
+serde_bytes = "0.11"
+
+tokio = { version = "1", features = ["full"] }
+tokio-util = "0.7"
+futures = "^0.3"
+
+dashmap = "6.1.0"
+
+nanoid = "0.4.0"
+base64ct = { version = "1", features = ["alloc"] }
+
+[profile.dev]
+opt-level = 0
+codegen-units = 8
+
+[profile.release]  
+lto = true # too slow
+# opt-level = "z"  # default: 3
+strip = true  # Automatically strip symbols from the binary.
+codegen-units = 1

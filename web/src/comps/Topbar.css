@@ -1,0 +1,253 @@
+.topbar {
+  z-index: 1000;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar.open {
+  width: 220px;
+  transform: translateX(0);
+}
+
+.topbar.closed {
+  width: 2rem;
+  transform: translateX(0);
+}
+
+.topbar.open .topbar-header {
+  margin-left: auto;
+}
+/* topbar Header */
+.topbar-header {
+  padding: 0.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* min-height: 40px; */
+}
+
+.topbar-brand {
+  font-weight: 310;
+  font-size: 1.2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: opacity 0.3s ease;
+  /* line-height: 1rem; */
+  font-size: 14px;
+  font-weight: 400;
+  color: #333;
+  border-width: 0 0 0 3px;
+  border-style: solid;
+  border-color: #2ec605;
+  /* letter-spacing: 1px; */
+  padding-left: 5px;
+  margin: 10px 5px;
+  text-transform: uppercase;
+}
+
+.topbar.closed .topbar-brand {
+  padding: 0rem;
+  opacity: 0;
+  width: 0;
+}
+
+.topbar-toggle {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.topbar-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Navigation */
+.topbar-nav {
+  flex: 1;
+}
+
+.topbar-item {
+  display: inline-flex;
+  align-items: center;
+  margin: 0px 5px;
+  width: fit-content;
+  padding: 0.42rem 0.7rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  /* border-left: 3px solid transparent; */
+  position: relative;
+  font-size:14px;
+}
+
+.topbar-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-left-color: #ecf0f1;
+}
+
+.topbar-item.active {
+  background: linear-gradient(125deg, #adeef1 6.18%, #f5f5f5);
+  border-radius: 3px;
+  color: #080a87;
+}
+
+@media (prefers-color-scheme: dark) {
+  .topbar-item {
+    color: #89c417;
+  }
+  .topbar-item.active {
+    background: linear-gradient(125deg, #dddb6d 6.18%, #db85aa);
+    /* background: #bedb52; */
+    border-radius: 3px;
+    color: #1a11a2;
+  }
+  .topbar-brand {
+    color: #f2f0f8;
+  }
+}
+.topbar-icon {
+  font-size: 1rem;
+  /* min-width: 24px; */
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+}
+
+.topbar-label {
+  margin-left: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.topbar.closed .topbar-label {
+  opacity: 0;
+  transform: translateX(-10px);
+}
+
+/* Footer */
+.topbar-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1rem;
+}
+
+.topbar-user {
+  display: flex;
+  align-items: center;
+  padding: 0.3rem 0.3rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+}
+
+.topbar.closed .topbar-user .topbar-label {
+  opacity: 0;
+}
+
+/* Overlay for mobile */
+.topbar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 999;
+  opacity: 1;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.topbar-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .topbar.closed {
+    display:none;
+  }
+  
+  .topbar-item{
+    color: #b7ce1f;
+  }
+  .topbar-brand{
+    color: #f2f0f8;
+  }
+}
+
+@media (min-width: 769px) {
+  .topbar-overlay {
+    display: none;
+  }
+}
+
+/* Tooltip for closed topbar items */
+.topbar.closed .topbar-item {
+  position: relative;
+}
+
+.topbar.closed .topbar-item::after {
+  content: attr(title);
+  position: absolute;
+  left: 60px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #2c3e50;
+  color: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 1002;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.topbar.closed .topbar-item:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Animation for menu items */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.topbar-item {
+  animation: slideInLeft 0.3s ease forwards;
+}
+
+/* Scrollbar styling */
+.topbar-nav::-webkit-scrollbar {
+  width: 6px;
+}
+
+.topbar-nav::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.topbar-nav::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+.topbar-nav::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
