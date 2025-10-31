@@ -4,7 +4,10 @@ Anonymous encrypted chat app, one to one, mobile ready, simple &amp; elegant.
 ### [中文介绍](./README_CN.md)
 
 ### Screenshots
+- simple & distraction free ui
 ![en-light](./doc/screenshots/en-light.png)
+
+- i18n support & dark theme
 ![zh-dark](./doc/screenshots/zh-dark.png)
 
 ### Core Features
