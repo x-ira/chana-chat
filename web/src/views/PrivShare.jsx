@@ -2,6 +2,7 @@ import { createSignal, createEffect } from 'solid-js';
 import { Btn } from '../comps/Form';
 import { Footer, Header } from '../comps/Base';
 import { url_params, PrivChat } from '../utils/main';
+import { L } from '../utils/languages';
 
 function PrivShare() {
   let params = url_params();
@@ -15,21 +16,21 @@ function PrivShare() {
   return (
     <>
     <Header />
-    <meta property="og:title" content="Arc Private Chat Invitation" />
-    <meta property="og:description" content="Anonymous Relay Chat"/>
+    <meta property="og:title" content="Chànà - Private Chat Invitation" />
+    <meta property="og:description" content="Chànà- Anonymous Encrypted Chat"/>
     <meta property="og:image" content="/preview.jpg"/>
     <meta property="og:url" content=""/>
 
     <meta name="twitter:card" content="summary"/>
-    <meta name="twitter:title" content="Arc Private Chat Invitation"/>
+    <meta name="twitter:title" content="Chànà - Private Chat Invitation"/>
     <meta name="twitter:description" content="Anonymous Relay Chat"/>
     <div class="page_block">
       <div>
-        <h3>~ Anonymous Private Chat Invitation ~</h3>
-        <h5>You are invited to start a private chat with {params.get('nick')} </h5>
+        <h3>{L('share_tit')}</h3>
+        <h5>{L('share_body', {nick: params.get('nick')})} </h5>
       </div>
-      <Btn bind={()=>decide(1)} name="Accept" class="inv_agree"/>
-      <Btn bind={()=>decide(0)} name="Decline" class="inv_decline"/>
+      <Btn bind={()=>decide(1)} name={L('accept')} class="inv_agree"/>
+      <Btn bind={()=>decide(0)} name={L('decline')} class="inv_decline"/>
     </div>
     <Footer/>
     </>

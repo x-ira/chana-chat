@@ -32,7 +32,7 @@ function Share() {
         $msg(L('lnk_copied'));
       });
     }else{
-      $msg(L('inv_link') + `: ${url}`);
+      $msg(L('inv_lnk') + `: ${url}`);
     }
   }
   return (

@@ -47,10 +47,17 @@ export const lang = {
     no_chat_tip: `You need <a href='/' >invite</a> someone to start a chat.`,
     //invitation:
     lnk_copied: 'Invitation link has copied to clipboard.',
-    inv_lnk: 'Invitation Link',
+    inv_lnk: 'Copy & Share this invitation',
     create_inv: 'Create Invitation',
     inv_tit: 'Private Chat Invitation',
     inv_txt: 'From: <Chànà - क्षण - Anonymous Encrypted Chat>',
+    accept: 'Accept',
+    decline: 'Decline',
+    inv_cancel: 'Cancel Chat',
+    inv_cancel_confirm: 'If cancel this chat，re-invitation is required to reach each other, continue？',
+    share_tit: '~ Anonymous Private Chat Invitation ~',
+    share_body: o=>`You are invited to start a private chat with ${o.nick}.`,
+    inv_track_s5: o=>`Waiting for <${o.nick}> to join this private chat.`,
   },
   zh: {
     //setting:
@@ -86,9 +93,16 @@ export const lang = {
     no_chat_tip: `请<a href='/' >邀请</a> 某人以开启聊天.`,
     //invitation:
     lnk_copied: '邀请链接已复制到剪贴板.',
-    inv_lnk: '邀请链接',
+    inv_lnk: '复制并分享此邀请链接',
     create_inv: '创建邀请',
     inv_tit: '聊天邀请',
     inv_txt: '来自：<刹那(Chànà) - 匿名加密聊天App>',
+    accept: '同意',
+    decline: '拒绝',
+    inv_cancel: '取消聊天',
+    inv_cancel_confirm: '取消此次聊天，下次聊天需重新邀请， 是否继续？',
+    share_tit: '~ 匿名加密聊天邀请 ~',
+    share_body: o=>`您收到来自${o.nick}的私聊邀请.`,
+    inv_track_s5: o=>`等待<${o.nick}>上线后开启聊天.`,
   }
 };
