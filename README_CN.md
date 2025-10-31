@@ -4,7 +4,7 @@
 - 提供一款开源的端到端加密的, 简单快捷, 可以自主部署的匿名聊天服务.
 
 ### 简介
-- 基于Rust和Solidjs构建, 只提供Web版, 移动端的浏览器中也可以使用;
+- 基于Rust和Solidjs构建, 目前只提供Web版, 移动端的浏览器中也可以使用;
 - 一键创建端到端加密的私人聊天邀请, 对方点击即可开启聊天;
 - 支持文本, 图片, 文件, 语音等多种消息;
 - 支持离线消息;
@@ -36,14 +36,12 @@
   + 服务端采用Rust实现, 采用的channel等无锁通信技术, 同时, 使用高性能的concurrent库, 如Dashmap等;
   + 客户端使用solidjs  + WebAssembly(Crypto);
   + 通讯协议为WebSocket,传输格式为二进制数据(Binary), 使用MessagePack为序列化协议.
-  + 节点发现使用DHT, 具体为Mainline DHT.
   
   
-## 开源协议
+### 开源协议
 本项目采用 [Apache License v2.0](https://www.apache.org/licenses/LICENSE-2.0) 开源协议，允许自由使用、修改和分发。
 
 ## ⚠️ 免责声明
-
 - 本项目仅供学习和合法用途使用.
 - 用户需遵守当地法律法规, 请勿将本项目提供的软件用于违法当地法律的活动中.
 - 开发者不承担任何使用风险和法律责任.
@@ -54,16 +52,14 @@
 - 欢迎提交PR, 欢迎同道者加入共建!
 - mail: kira.x@tuta.io
 
-## ⚡ 闪电部署
-
-> 🎆 **2 分钟内开始使用！** Arc 专为即时部署而设计，零麻烦。
+### ⚡ 部署
 
 ### 💻 系统要求
 - **Rust**: 1.70+ （若从源码构建）
 - **操作系统**: Windows、macOS、Linux 或任何现代操作系统
 - **存储**: 应用程序约 10MB
 
-### 📬 快速安装
+### 快速安装
 
 #### 选项 1: 一键部署 (推荐)
 下载预编译好的版本, 解压后即可使用.
@@ -72,19 +68,19 @@
 ```bash
 # 1. 克隆仓库
 git clone https://github.com/x-ira/chana-chat.git
-cd arc
+cd chana-chat
 
 # 2. 构建优化版本
 cargo build --release
 
 # 3. 启动 Chana
-./target/release/arc
+./target/release/chana
 
-🌐 在 http://localhost:1930 访问您的安全聊天
+🌐 在 http://localhost:7788 访问您的安全聊天
 ```
 
 ### 🐛 **发现了 Bug？**
-在 [GitHub Issues](https://github.com/x-ira/arc-chat/issues) 上报告 - 我们在 24 小时内修复关键安全问题！
+请在 [GitHub Issues](https://github.com/x-ira/arc-chat/issues) 上报告
 
 > *"在一个处处监控的世界里，匿名不是奢侈品 - 而是必需品。"*
 
