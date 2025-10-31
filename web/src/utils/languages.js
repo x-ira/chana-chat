@@ -56,8 +56,8 @@ export const lang = {
     inv_cancel: 'Cancel Chat',
     inv_cancel_confirm: 'If cancel this chat，re-invitation is required to reach each other, continue？',
     share_tit: '~ Anonymous Private Chat Invitation ~',
-    share_body: o=>`You are invited to start a private chat with ${o.nick}.`,
-    inv_track_s5: o=>`Waiting for <${o.nick}> to join this private chat.`,
+    share_body: o => `You are invited to start a private chat with ${o.nick}.`,
+    inv_track_s5: o => `Waiting for <${o.nick}> to join this private chat.`,
   },
   zh: {
     //setting:
@@ -100,9 +100,9 @@ export const lang = {
     accept: '同意',
     decline: '拒绝',
     inv_cancel: '取消聊天',
-    inv_cancel_confirm: '取消此次聊天，下次聊天需重新邀请， 是否继续？',
+    inv_cancel_confirm: '取消此次聊天，下次聊天需重新邀请，是否继续？',
     share_tit: '~ 匿名加密聊天邀请 ~',
-    share_body: o=>`您收到来自${o.nick}的私聊邀请.`,
-    inv_track_s5: o=>`等待<${o.nick}>上线后开启聊天.`,
+    share_body: o => `您收到来自${o.nick}的私聊邀请.`,
+    inv_track_s5: o => `等待<${o.nick}>上线后开启聊天.`,
   }
 };
