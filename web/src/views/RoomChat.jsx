@@ -301,9 +301,7 @@ function RoomChat(props) {
    return (
      <>
     <Switch>
-      <Match when={!room()} >
-        <div innerHTML={L('no_chat_tip')} />
-      </Match>
+      <Match when={!room()}></Match>
       <Match when={room().state < 9} >
         <Invitation on_track={it=>wsc.emit(it)}/>
       </Match>

@@ -16,8 +16,12 @@ function menu() {
 }
 function Header(){
   let [show_lock, $show_lock] = createSignal(false);
-  let [locker] = createResource(async () =>await Locker.load());
+  let [locker] = createResource(async () => await Locker.load());
   const navi = useNavigate();
+  const lock = async () => {
+    await Locker.set_lock(locker(), true);
+    location = '/';
+  };
   createEffect(()=>{
     if(locker()) {
       if(locker().locked) {
@@ -37,7 +41,7 @@ function Header(){
         <A href="/chat" target="_self"><i class='i-chat'></i> {L('chat')} </A> 
         <A href="/setting" target="_self"><i class="i-setting"></i> {L('setting')}</A>
         <Show when={show_lock()} >
-        <A href="/lock" target="_self"><i class='i-lock'></i> {L('lock')}</A>
+        <a href="#" target="_self" onclick={lock} ><i class='i-lock'></i>&nbsp;&nbsp;{L('lock')}</a>
         </Show>
         <a href="javascript:void(0);" class="icon" onclick={menu}>
         ☰

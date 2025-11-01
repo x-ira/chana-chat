@@ -3,27 +3,17 @@ import { useNavigate } from '@solidjs/router';
 import { Pwd, Btn } from '../comps/Form';
 import { Locker} from '../utils/main';
 import {Header, Footer} from '../comps/Base';
+import { L } from '../utils/languages';
 
 function Lock() {
   const [locker] = createResource(async () =>await Locker.load()); 
   let [pin, $pin] = createSignal('');
-  let [unlocked, $unlocked] = createSignal(false);
   let navi = useNavigate();
-  createEffect(()=>{
-    if(locker() && !locker().locked) {
-      Locker.set_lock(locker(), true);
-    }
-  });
-  createEffect(()=>{
-    if(unlocked()) {
-      navi('/');
-    }
-  });
 
   const unlock = async ()=>{
     if(locker() && Locker.verify(locker(), pin())) {
-      Locker.set_lock(locker(), false);
-      $unlocked(true);
+      await Locker.set_lock(locker(), false);
+      navi('/');
     }
   };
   return (
@@ -32,7 +22,7 @@ function Lock() {
     <div class="page_block">
       <form>
       <Pwd name="PIN" bind={$pin}  on_enter={unlock} />
-      <Btn name="Unlock" bind={unlock} />  &nbsp; 
+      <Btn name={L('unlock')} bind={unlock} />  &nbsp; 
       </form>
     </div>
     <Footer/>

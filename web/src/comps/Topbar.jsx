@@ -1,8 +1,9 @@
 import './Topbar.css';
-import { createSignal, For, onMount, onCleanup, createEffect, createResource } from 'solid-js';
+import { createSignal, For, onMount, onCleanup, createEffect, createResource, Switch } from 'solid-js';
 import { PrivChat, url_params } from '../utils/main';
 import { chg_room, priv_chats, room, set_mobile, is_mobile, is_open, set_open, first_chat, load_room } from '../stores/chat';
 import { b64_std } from '../utils/app';
+import { L } from '../utils/languages';
 
 function Topbar(props) {
   const [actived, $actived] = createSignal();
@@ -34,21 +35,26 @@ function Topbar(props) {
   };
 
   return (
-    <>
-      <For each={priv_chats()}>
-        {(chat) => (
-          <div
-            class={`topbar-item ${chat.rmk == actived() ? 'active' : ''}`}
-            onClick={() => handleItemClick(chat)}
-            title={chat.nick}
-          >
-            <span class="topbar-icon"><i class="i-person"></i></span>
-            <span class="topbar-label">{chat.nick}</span>
-          </div>
-        )}
-      </For>
-      <hr/>
-    </>
+    <Switch>
+      <Match when={!room()} >
+        <div class="page_block" innerHTML={L('no_chat_tip')} />
+      </Match>
+      <Match when={room()} >
+        <For each={priv_chats()}>
+          {(chat) => (
+            <div
+              class={`topbar-item ${chat.rmk == actived() ? 'active' : ''}`}
+              onClick={() => handleItemClick(chat)}
+              title={chat.nick}
+            >
+              <span class="topbar-icon"><i class="i-person"></i></span>
+              <span class="topbar-label">{chat.nick}</span>
+            </div>
+          )}
+        </For>
+        <hr/>
+      </Match>
+    </Switch>
   );
 }
 

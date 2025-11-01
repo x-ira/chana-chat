@@ -50,13 +50,14 @@ function Setting(){
     
       <div>
         <Pwd name={L('set_lock_pin')} bind={$lock_pin} tip="PIN for app"/>
-        <Btn name={L('set')} bind={()=>{
-          if(Locker.init(lock_pin())){
-            $msg(L('done'));
+        <Btn name={L('set')} bind={async ()=>{
+          if(!lock_pin()) return $msg(L('input_required'));
+          if(await Locker.init(lock_pin())){
+            location = '/setting';
           }
         }} /> 
         <Btn name={L('clear')} bind={()=>{
-          del('locker', meta).then(r=>$msg(L('done')));
+          del('locker', meta).then(r=>location = '/setting');
         }} />
       </div>
 
