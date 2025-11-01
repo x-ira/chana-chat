@@ -16,9 +16,9 @@ function Setting(){
     <>
     <Header/>
     <div class="page_block">
-      <p>{L('your_nick')}: &nbsp; {nick_now()} </p>
       <form>
       <div>
+        <p>{L('your_nick')}: &nbsp; {nick_now()} </p>
         <Txt name={L('new_nick')} bind={[nick_new, $nick_new]} tip="Nick name for all chats" />
         <Btn name={L('set')} bind={()=>{
             localStorage.setItem('nick', nick_new());

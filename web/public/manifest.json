@@ -1,0 +1,13 @@
+{
+  "name": "Chana",
+  "short_name": "Chànà - क्षण",
+  "start_url": "/",
+  "display": "standalone",
+  "scope":"/",
+  "icons": [
+    {
+      "src": "app.jpg",
+      "sizes": "640x640"
+    }
+  }
+}

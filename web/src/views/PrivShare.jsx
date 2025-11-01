@@ -26,8 +26,8 @@ function PrivShare() {
     <meta name="twitter:description" content="Anonymous Relay Chat"/>
     <div class="page_block">
       <div>
-        <h3>{L('share_tit')}</h3>
-        <h5>{L('share_body', {nick: params.get('nick')})} </h5>
+        <h5>{L('share_tit')}</h5>
+        <p>{L('share_body', {nick: params.get('nick')})} </p>
       </div>
       <Btn bind={()=>decide(1)} name={L('accept')} class="inv_agree"/>
       <Btn bind={()=>decide(0)} name={L('decline')} class="inv_decline"/>

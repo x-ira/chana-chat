@@ -54,6 +54,7 @@ function RoomChat(props) {
         kid: skid, nick: by_nick, state: 5, type: 1, rmk:u8_b64(rmk), ts: eng.ts
       });
       wsc.emit({Engagement: eng});
+      location = '/chat'; //to avoid page reload problem
     }
   }
   const init_wsc = () =>{
