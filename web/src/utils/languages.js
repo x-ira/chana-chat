@@ -34,7 +34,7 @@ export const lang = {
     expire_invitation: 'Expire all chat invitations',
     expire_invitation_confirm: 'All chat invitations will be expired, Continue?',
     //navigator:
-    site_tit: 'Chànà- क्षण',
+    site_tit: 'Chànà - क्षण',
     site_sub_tit: 'Anonymous Encrypted Chat',
     invitation: 'Invitation',
     chat: 'Chat',
@@ -86,7 +86,7 @@ export const lang = {
     expire_invitation: '过期所有的聊天邀请',
     expire_invitation_confirm: '所有的聊天邀请都将失效，是否继续？',
     //navigator
-    site_tit: '刹那- क्षण',
+    site_tit: '刹那 - क्षण',
     site_sub_tit: '匿名加密聊天',
     invitation: '邀请',
     chat: '聊天',
