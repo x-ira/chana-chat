@@ -10,6 +10,9 @@ Anonymous encrypted chat app, one to one, mobile ready, simple &amp; elegant.
 - i18n support & dark theme
 ![zh-dark](./doc/screenshots/zh-dark.png)
 
+- settings
+![setting-dark](./doc/screenshots/setting-dark.png)
+
 ### Core Features
 - __Anonymous__:
   + NO user registration or personal info required, No email or phone number is required.
