@@ -204,9 +204,10 @@ footer{
   padding: 3px 0px;
   text-decoration: none;
 }
-a.navi {
-  /* color: 333; */
- 	text-decoration: none;
+.navi {
+  color: #222bcb;
+  /* cursor: pointer; */
+ 	/* text-decoration: none; */
 	border-bottom: 1px dashed #999;
 }
 hr {

@@ -20,6 +20,12 @@ body {
     'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
+}
+@media (max-width: 500px) {
+  body{
+    font-size: 12px;
+  }
 }
 
 code {

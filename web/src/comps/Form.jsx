@@ -122,11 +122,11 @@ function Slt(props) {
 }
 function Lnk(props) {
   let target = props.target || '_self';
-  let to = props.to || '#';
+  let to = props.to || `javascript:void(0)`;
   let cls = props.class || '';
   
   return (
-    <a href={to} target={target} onclick={props.bind} title={props.title} class={cls}>{props.name}</a>
+    <a href={to} target={target} onclick={e=>props.bind(e)} title={props.title} class={cls}>{props.name}</a>
   );
 }
 export { Txt, Cbx, Pwd, Btn, Slt, Lnk, File, ImgSlt, FileSlt}

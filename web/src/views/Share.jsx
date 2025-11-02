@@ -3,10 +3,11 @@ import {Header, Footer} from '../comps/Base';
 import { b64_url, get, u8_b64, u8_b64_url } from '../utils/app';
 import {get_ecdh, nick_name} from '../utils/main';
 import { L } from '../utils/languages';
-import { Btn } from '../comps/Form';
+import { Lnk } from '../comps/Form';
+
 function Share() {
   let [msg, $msg] = createSignal();
-  const invite_priv_chat = async() => {
+  const init_chat_inv = async() => {
     $msg();
     let ecdh = await get_ecdh();
     let pub_key = u8_b64_url(ecdh.pub_key);
@@ -35,12 +36,30 @@ function Share() {
       $msg(L('inv_lnk') + `: ${url}`);
     }
   }
+  const open_copied_inv = () => {
+    if(navigator.clipboard) {
+      navigator.clipboard.readText().then(url => {
+        url = url.trim();
+        if(url.startsWith('http')) { //valid url
+          location = url;
+        }else{
+          $msg(L('invalid_inv_lnk'));
+        }
+      });
+    }
+  }
   return (
     <>
       <Header/>
       <div class="page_block" >
-        <Btn name={L('create_inv')} bind={async ()=> await invite_priv_chat()} />
-        {msg() && <div class="act_msg">{msg}</div> }
+        <h5>~ # {L('invitation')} # ~</h5> <br/>
+        <p>
+        <Lnk name={L('share')} bind={async ()=> await init_chat_inv()} class="navi"/> {L('share_inv_tip')}
+        </p>
+        <p>
+        <Lnk name={L('open')} bind={async (e)=> await open_copied_inv(e)} class="navi"/> {L('open_inv_tip')}
+        </p>
+        { msg() && <div class="act_msg">{msg}</div> }
       </div>
       <Footer/>
     </>
