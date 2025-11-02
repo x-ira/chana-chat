@@ -1,5 +1,3 @@
-import Invitation from "../comps/Invitation";
-
 export const LANGUAGES = [
   ['en', 'English'],
   ['zh', '简体中文']
@@ -16,6 +14,8 @@ export const lang = {
   en: {
     //setting:
     language: 'Language',
+    color_mode: 'Color Mode',
+    COLOR_MODES: [['s', 'System'], ['l', 'Light'], ['d', 'Dark']],
     your_nick: 'Your nick name',
     new_nick: 'New nick name',
     web_notify: 'Web Notification',
@@ -68,6 +68,8 @@ export const lang = {
   zh: {
     //setting:
     language: '语言',
+    color_mode: '颜色模式',
+    COLOR_MODES: [['s', '系统'], ['l', '浅色'], ['d', '深色']],
     your_nick: '您的昵称',
     new_nick: '新昵称',
     web_notify: '网页通知',

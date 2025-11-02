@@ -62,13 +62,11 @@
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  .voi_container {
-    color: #bb1dd2;
-    background: #252127;
-    border-color: #252c5c;
-  }
-  .point {
-    background-color: #9937c7;
-  }
+.dark .voi_container {
+  color: #bb1dd2;
+  background: #252127;
+  border-color: #252c5c;
+}
+.dark .point {
+  background-color: #9937c7;
 }

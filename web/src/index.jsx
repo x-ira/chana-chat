@@ -5,6 +5,9 @@ import './index.css';
 import './assets/skeleton.css';
 import './assets/icon.css';
 import App from './App';
+import { init_color_scheme } from './utils/appearance';
+
+init_color_scheme();
 
 const root = document.getElementById('root');
 

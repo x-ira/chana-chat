@@ -105,51 +105,49 @@
 }
 
 /* 深色模式支持 */
-@media (prefers-color-scheme: dark) {
-  .command-input {
-    background: #0d1117;
-    border-color: #30363d;
-    color: #f0f6fc;
-  }
-  
-  .command-input:focus {
-    border-color: #1f6feb;
-    box-shadow: 0 0 0 3px rgba(31, 111, 235, 0.1);
-  }
-  
-  .command-input::placeholder {
-    color: #8b949e;
-  }
-  
-  .suggestions-dropdown {
-    background: #161b22;
-    border-color: #30363d;
-    box-shadow: 0 8px 24px rgba(1, 4, 9, 0.4);
-  }
-  
-  .suggestion-item {
-    border-bottom-color: #21262d;
-  }
-  
-  .suggestion-item:hover {
-    background-color: #21262d;
-  }
-  
-  .suggestion-item.selected {
-    background-color: #2e475d;
-  }
-  
-  .suggestion-description {
-    color: #8b949e;
-  }
-  
-  .suggestions-dropdown::-webkit-scrollbar-thumb {
-    background: #484f58;
-  }
-  
-  .suggestions-dropdown::-webkit-scrollbar-thumb:hover {
-    background: #656c76;
-  }
+.dark .command-input {
+  background: #0d1117;
+  border-color: #30363d;
+  color: #f0f6fc;
+}
+
+.dark .command-input:focus {
+  border-color: #1f6feb;
+  box-shadow: 0 0 0 3px rgba(31, 111, 235, 0.1);
+}
+
+.dark .command-input::placeholder {
+  color: #8b949e;
+}
+
+.dark .suggestions-dropdown {
+  background: #161b22;
+  border-color: #30363d;
+  box-shadow: 0 8px 24px rgba(1, 4, 9, 0.4);
+}
+
+.dark .suggestion-item {
+  border-bottom-color: #21262d;
+}
+
+.dark .suggestion-item:hover {
+  background-color: #21262d;
+}
+
+.dark .suggestion-item.selected {
+  background-color: #2e475d;
+}
+
+.dark .suggestion-description {
+  color: #8b949e;
+}
+
+.dark .suggestions-dropdown::-webkit-scrollbar-thumb {
+  background: #484f58;
+}
+
+.dark .suggestions-dropdown::-webkit-scrollbar-thumb:hover {
+  background: #656c76;
 }
 
 /* Hign Contrast when focus */
@@ -185,5 +183,3 @@
   animation: slideDown 0.2s ease-out;
 }
 
-@media (prefers-color-scheme: dark) {
-}

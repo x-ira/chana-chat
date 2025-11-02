@@ -96,19 +96,17 @@
   color: #080a87;
 }
 
-@media (prefers-color-scheme: dark) {
-  .topbar-item {
-    color: #89c417;
-  }
-  .topbar-item.active {
-    background: linear-gradient(125deg, #dddb6d 6.18%, #db85aa);
-    /* background: #bedb52; */
-    border-radius: 3px;
-    color: #1a11a2;
-  }
-  .topbar-brand {
-    color: #f2f0f8;
-  }
+.dark .topbar-item {
+  color: #89c417;
+}
+.dark .topbar-item.active {
+  background: linear-gradient(125deg, #dddb6d 6.18%, #db85aa);
+  /* background: #bedb52; */
+  border-radius: 3px;
+  color: #1a11a2;
+}
+.dark .topbar-brand {
+  color: #f2f0f8;
 }
 .topbar-icon {
   font-size: 1rem;

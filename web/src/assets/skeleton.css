@@ -218,8 +218,8 @@ input[type="submit"].main,
 input[type="reset"].main,
 input[type="button"].main {
   color: #FFF;
-  background-color: #33C3F0;
-  border-color: #33C3F0; }
+  background-color: #19517a;
+  border-color: #2789ac; }
 .button.main:hover,
 button.main:hover,
 input[type="submit"].main:hover,
@@ -231,8 +231,8 @@ input[type="submit"].main:focus,
 input[type="reset"].main:focus,
 input[type="button"].main:focus {
   color: #FFF;
-  background-color: #1EAEDB;
-  border-color: #1EAEDB; }
+  background-color: #1c77ad;
+  border-color: #59a5c2; }
 
 
 /* Forms
@@ -248,6 +248,8 @@ textarea,
 select {
   margin:2px 2px;
   padding: 5px 5px; /* The 6px vertically centers text on FF, ignored by Webkit */
+  background-color: #ffffff;
+  color: #213547;
   border: 1px solid #D1D1D1;
   border-radius: 2px;
   box-shadow: none;
@@ -272,6 +274,19 @@ textarea {
 select{
   background-color: blanchedalmond;
   color: #000;
+}
+.dark input[type="email"],
+.dark input[type="number"],
+.dark input[type="search"],
+.dark input[type="text"],
+.dark input[type="tel"],
+.dark input[type="url"],
+.dark input[type="password"],
+.dark textarea,
+.dark select {
+  background-color: #21222e;
+  color: #e0e0e0;
+  border-color: #404040;
 }
 input[type="email"]:focus,
 input[type="number"]:focus,

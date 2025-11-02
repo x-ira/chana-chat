@@ -254,29 +254,30 @@ hr {
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
-@media (prefers-color-scheme: dark) {
-  .info a {
-    color: #b5b5d7;
-  }
-  .page_block {
-    border-color: #700789;
-  }
-  .msg_block {
-    border-color: #700789;
-    background: #022c31;
-  }
-  .msg_bar {
-    color: #b7ac22;
-    background: #331f27;
-    border-color: #252c5c;
-  }
-  hr{
-    border-color: #700789;
-  }
-  .m_out.wisper .m_cont {
-    background: #59033e;
-  }
-  .act_msg {
-    background: #212f56;
-  }
+.dark .info a {
+  color: #b5b5d7;
+}
+.dark .navi {
+  color: #ecf110;
+}
+.dark .page_block {
+  border-color: #700789;
+}
+.dark .msg_block {
+  border-color: #700789;
+  background: #022c31;
+}
+.dark .msg_bar {
+  color: #b7ac22;
+  background: #331f27;
+  border-color: #252c5c;
+}
+.dark hr {
+  border-color: #700789;
+}
+.dark .m_out.wisper .m_cont {
+  background: #59033e;
+}
+.dark .act_msg {
+  background: #212f56;
 }

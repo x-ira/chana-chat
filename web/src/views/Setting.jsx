@@ -2,6 +2,7 @@ import { createResource, createSignal, Show } from "solid-js";
 import { get,post} from '../utils/app';
 import { Locker, nick_name } from '../utils/main';
 import { LANGUAGES, local, L } from "../utils/languages";
+import { color_scheme, init_color_scheme } from "../utils/appearance";
 import { Txt, Pwd, Btn, Slt } from "../comps/Form";
 import { clear, del } from "idb-keyval";
 import { Footer, Header } from "../comps/Base";
@@ -11,6 +12,7 @@ function Setting(){
   let [nick_now, $nick_now] = createSignal(nick_name());
   let [nick_new, $nick_new] = createSignal('');
   let [lang, $lang] = createSignal(local());
+  let [color_mode, $color_mode] = createSignal(color_scheme());
   let [msg, $msg] = createSignal('');
   return (
     <>
@@ -33,6 +35,15 @@ function Setting(){
         <Btn name={L('set')} bind={()=>{
             localStorage.setItem('lang', lang());
             location = '/setting';
+        }} /> 
+      </div>
+    
+      <div>
+        <Slt name={L('color_mode')} options={L('COLOR_MODES')} bind={[color_mode, $color_mode]}  opt_disp={opt=>opt[1]}  opt_val={opt=>opt[0]} class="room" />
+        <Btn name={L('set')} bind={()=>{
+            localStorage.setItem('color_mode', color_mode());
+            init_color_scheme();
+            $msg(L('done'));
         }} /> 
       </div>
     
