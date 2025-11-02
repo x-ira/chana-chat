@@ -20,7 +20,7 @@ export function init_color_scheme() {
 }
 
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-    if (localStorage.getItem('color_mode') === 's') {
+    if (color_scheme() === 's') {
         const doc_cls = document.documentElement.classList;
         if (e.matches) {
             doc_cls.add('dark');
