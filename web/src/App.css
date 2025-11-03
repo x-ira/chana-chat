@@ -57,7 +57,11 @@ footer{
   color: #b318f0;
   margin: 1px 5px;
 }
-
+.inv_tit {
+  color: #335a70;
+  font-size: 15px;
+  font-weight: 490;
+}
 .page_block{
   border: 1px dashed #c39dcb;
   margin: 5px;
@@ -280,4 +284,7 @@ hr {
 }
 .dark .act_msg {
   background: #212f56;
+}
+.dark .inv_tit{
+  color: #2a77b5;
 }

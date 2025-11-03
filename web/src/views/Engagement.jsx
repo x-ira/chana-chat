@@ -9,12 +9,12 @@ import { set } from 'idb-keyval';
 import { engagement_sign, inv_track_sign } from '../comps/ChatHelper';
 import { useNavigate } from '@solidjs/router';
 
-function PrivShare() {
+function PrivChatInv() {
   let params = url_params();
-  let by_nick = params.get('nick');
-  let skid = params.get('skid');
+  let by_nick = params.get('n');
+  let skid = params.get('s');
   let skid_std = b64_std(skid);
-  let pk = params.get('pub_key');
+  let pk = params.get('p');
   const [used, $used] = createSignal(false);
   const navigate = useNavigate();
   
@@ -63,7 +63,7 @@ function PrivShare() {
         <Match when={skid_std == dsa.skid}>{L('inv_self')}</Match>
         <Match when={used()}>{L('inv_used')}</Match>
         <Match when={!used()}>
-          <p>{L('share_body', {nick: params.get('nick')})} </p>
+          <p>{L('share_body', {nick: by_nick})} </p>
           <Btn bind={async ()=>await decide(1)} name={L('accept')} class="inv_agree"/>
           <Btn bind={async ()=>await decide(0)} name={L('decline')} class="inv_decline"/>
       </Match>
@@ -74,4 +74,4 @@ function PrivShare() {
     </>
   );
 }
-export default PrivShare;
+export default PrivChatInv;
