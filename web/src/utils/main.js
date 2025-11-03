@@ -225,3 +225,8 @@ export function u8_utf8(bytes){
 export function url_params() {
   return new URLSearchParams(window.location.search);
 }
+export function extract_urls(text) {
+  // 匹配http://或https://开头的URL，包含域名、路径、查询参数和哈希
+  const urlPattern = /https?:\/\/[^\s/$.?#].[^\s]*/g;
+  return text.match(urlPattern) || [];
+}

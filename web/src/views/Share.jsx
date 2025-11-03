@@ -1,7 +1,7 @@
 import { createSignal } from 'solid-js';
 import {Header, Footer} from '../comps/Base';
 import { b64_url, get, u8_b64, u8_b64_url } from '../utils/app';
-import {get_ecdh, nick_name} from '../utils/main';
+import {extract_urls, get_ecdh, nick_name} from '../utils/main';
 import { L } from '../utils/languages';
 import { Lnk } from '../comps/Form';
 
@@ -38,10 +38,10 @@ function Share() {
   }
   const open_copied_inv = () => {
     if(navigator.clipboard) {
-      navigator.clipboard.readText().then(url => {
-        url = url.trim();
-        if(url.startsWith('http')) { //valid url
-          location = url;
+      navigator.clipboard.readText().then(txt => {
+        let urls = extract_urls(txt);
+        if(urls.length > 0) {
+          location = urls[0];
         }else{
           $msg(L('invalid_inv_lnk'));
         }
