@@ -3,7 +3,7 @@ import { createStore } from 'solid-js/store';
 import WebSocketClient from '../utils/ws';
 import _ from '../utils/notification';
 import { Time,get,upload_files, b64_u8, b64_url, u8_b64, b64_url_u8, b64_std } from '../utils/app';
-import { Cipher, PrivChat, break_time, ecdh_exchange, expire_ecdh, msg_room, nick_name, url_params } from '../utils/main';
+import { Cipher, InvKey, PrivChat, break_time, ecdh_exchange, expire_ecdh, msg_room, nick_name, url_params } from '../utils/main';
 import { room, rmk, save_priv_chat, update_priv_chat, priv_chat, room_id, remark_priv_chat } from '../stores/chat';
 import { set, get as find, setMany, del, keys, delMany } from 'idb-keyval';
 import { nanoid } from 'nanoid';
@@ -38,23 +38,10 @@ function RoomChat(props) {
   let endpoint = `/ws/${nick}/k/${b64_url(dsa.verify_key)}`;
 
   const engagement = async ()=> {
-    if(params.get('skid')) { // try attend a priv-chat engagement
-      let decide = params.get('decide');
-      let skid = b64_std(params.get('skid'));
-      let kid = b64_u8(skid);
-      let by_nick = params.get('nick');
-      let pub_key = b64_url_u8(params.get('pub_key')); //tracker
-      if(decide == 0) {
-        let it = await inv_track_sign(kid, nick, 2, pub_key); //inform partner, declined
-        return wsc.emit({InviteTracking:it});
-      }
-      let eng = await engagement_sign(skid, kid, pub_key, nick); //always allow invite
-      let rmk = await ecdh_exchange(skid, pub_key, true);
-      save_priv_chat({
-        kid: skid, nick: by_nick, state: 5, type: 1, rmk:u8_b64(rmk), ts: eng.ts
-      });
-      wsc.emit({Engagement: eng});
-      location = '/chat'; //to avoid page reload problem
+    let decision = await find('inv_decide', meta);
+    if(decision) {
+      wsc.emit(decision);
+      await del('inv_decide', meta);
     }
   }
   const init_wsc = () =>{
@@ -64,11 +51,11 @@ function RoomChat(props) {
      await engagement();
     });
     wsc.on('#reconnecting', ({attempt}) => {
-      $conn_state('Try to connect the server...', attempt);
+      $conn_state(L('ws_rec'), attempt);
     });
     wsc.on('#reconnect_failed', () => {
       wsc.close();
-      $conn_state('Fail to connect. Refresh the page to start over');
+      $conn_state(L('ws_rec_fail'));
     });
     wsc.on('msg', async ws_msg => { //register once
       // console.log('recv msg', ws_msg);
@@ -82,7 +69,7 @@ function RoomChat(props) {
         msg.cont = rmk(msg_rm).dec_u8(msg.cont);
 
         if (document.visibilityState === 'hidden') {
-           notify.show('Arc-Chat',`A private ${msg.kind} msg from ${msg.nick}`);
+           notify.show('Chànà-Chat',`A private ${msg.kind} msg from ${msg.nick}`);
         }
         let pc = priv_chat()
         find(msg_rm).then((r = [])=>{
@@ -109,11 +96,11 @@ function RoomChat(props) {
         if(rmk) { 
           state = 9;
           let by_skid = u8_b64(eng.by_kid);
-          save_priv_chat({
+          await save_priv_chat({
             kid: by_skid, nick: eng.by_nick, state, type: 1, rmk:u8_b64(rmk), ts: eng.ts
           });
           if (document.visibilityState === 'hidden') {
-             notify.show('Arc-Chat',`${eng.by_nick} has accepted the Priv-Chat invitation.`);
+             notify.show('Chànà-Chat',`${eng.by_nick} has accepted the Priv-Chat invitation.`);
           }
         }
         let it = await inv_track_sign(eng.by_kid, eng.by_nick, state); //inform partner, expired Or success
@@ -132,14 +119,14 @@ function RoomChat(props) {
         if(it.state == 4) cont = `${it.by_nick} has cancelled the Priv-Chat invitation.`;
         if(it.state == 9) cont = `${it.by_nick} has accepted your Priv-Chat invitation.`;
         if(cont) {
-         notify.show('Arc-Chat', cont);
+         notify.show('Chànà-Chat', cont);
         }
-        update_priv_chat(u8_b64(it.by_kid), it.state);
+        await update_priv_chat(u8_b64(it.by_kid), it.state);
       }else if(ws_msg.Rsp) {
         let rsp = ws_msg.Rsp;
         let output = '';
         if(rsp.Output) output = rsp.Output;
-        else if(rsp == 'Offline') output = `${room().nick} is offline, message(s) will be delivered when user is online.`;
+        else if(rsp == 'Offline') output = L('offline', {nick: room().nick});
         $cmd_output(output);
       }
     });
@@ -166,7 +153,7 @@ function RoomChat(props) {
   }
   const chat_msg = (kind, cont, wisper) => { // parepared, No cont
     let msg = {nick, kind, ts: Time.ts(), kid, cont: rmk().enc_u8(cont), wisper };
-    return room().type == 0 ? {Chat: {room: room().id, msg}} : {PrivChat: {kid: b64_u8(room().kid), msg}};
+    return {PrivChat: {kid: b64_u8(room().kid), msg}};
   }
   const handle_input_msg = (cmd, params, send_at_once) => {
     $txt_cmd({cmd, params});
@@ -189,26 +176,21 @@ function RoomChat(props) {
         new_msg = txt_msg(params);
         break;
       case 'remark':
-        remark_priv_chat(room().kid, params.alias);
+        await remark_priv_chat(room().kid, params.alias);
         break;
       case 'clear': 
         await clear_priv_history();
         clean_room();
         break;
       case 'leave':  
-        await clear_priv_history();
-        update_priv_chat(room_id(),4);
+        await update_priv_chat(room_id(),4);
         clean_room();
         break;
-      case 'help':
-      default :
-        $cmd_output(`
-          Command Usages:<br>
-            &nbsp;/remark + [msg] : set a alias for this chat. <br>
-            &nbsp;/leave : leave the Priv-Chat & clear the chat history. <br>
-            &nbsp;/clear : clear the Priv-Chat history. <br>
-            &nbsp;/help : print this message.<br>
-        `);
+      case 'exit':  
+        await clear_priv_history();
+        await update_priv_chat(room_id(),4);
+        clean_room();
+        break;
     };
     $txt_cmd(null); //clear
     return [new_msg];

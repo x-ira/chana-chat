@@ -1,7 +1,8 @@
+import { L } from "../utils/languages";
 export const defaultCommands = [
   {
     name: 'remark',
-    desc: 'set a alias for this chat',
+    desc:  L('cmd_remark'),
     scope: 2,
     parameters: [
       {
@@ -14,20 +15,20 @@ export const defaultCommands = [
   },
   {
     name: 'clear',
-    desc: 'Clear Priv-Chat history',
+    desc: L('cmd_clear'),
     scope: 1,
     parameters: []
   },
   {
     name: 'leave',
-    desc: 'Leave the current private chat',
+    desc: L('cmd_leave'), 
     scope: 1,
     parameters: []
   },
   {
-    name: 'help',
-    desc: 'Command usages',
-    scope: 2,
+    name: 'exit',
+    desc: L('cmd_exit'),
+    scope: 1,
     parameters: []
   },
 ];

@@ -134,8 +134,8 @@ th {
 /* Typography
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 h1, h2, h3, h4, h5, h6 {
-  margin-top: 1rem;
-  margin-bottom: 0.2rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
   font-weight: 350; }
 h1 { line-height: 1.2;  letter-spacing: -.1rem;}
 h2 { line-height: 1.25; letter-spacing: -.07rem; }

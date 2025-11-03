@@ -72,7 +72,21 @@ export async function ecdh_exchange(kid, rival_pub_key, find_mode){
   let rmk = ecdh.exchange(rival_pub_key);
   return rmk;
 }
-/// type: 1,
+export class InvKey{
+  static async list() {
+    let inv_pks = await find("inv_pks", meta);
+    return inv_pks ?? [];
+  }
+  static async is_existed(pk) {
+    let pks = await this.list();
+    return pks.includes(pk);
+  }
+  static async save(pk) {
+    let pks = await this.list();
+    pks.push(pk);
+    await set("inv_pks", pks, meta);
+  }
+}
 // state: 0: pending, 1: waitting, 2: declined, 3: expired, 4. cancelled, 5. engaged  9. accepted
 export class PrivChat{
   static async save(priv_chats) {

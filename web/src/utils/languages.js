@@ -47,6 +47,9 @@ export const lang = {
     file: o =>`${o.num} file(s) selected`,
     media_not_support: 'Oopts, Media device not supported.',
     no_chat_tip: `You need <a href='/' class='navi'>invite</a> someone to start a chat.`,
+    ws_rec: 'Try to connect the server...',
+    ws_rec_fail: 'Fail to connect. Refresh the page to start over',
+    offline: o => `${o.nick} is offline, message(s) will be delivered when user is online.`,
     //invitation:
     lnk_copied: 'Invitation link has copied to clipboard.',
     inv_lnk: 'Copy & Share this invitation',
@@ -60,10 +63,17 @@ export const lang = {
     accept: 'Accept',
     decline: 'Decline',
     inv_cancel: 'Cancel Chat',
+    inv_used: 'This one-time invitation has been used.',
+    inv_self: 'Sorry, you cannot invite yourself.',
     inv_cancel_confirm: 'If cancel this chat，re-invitation is required to reach each other, continue？',
     share_tit: '~ Anonymous Private Chat Invitation ~',
     share_body: o => `You are invited to start a private chat with <${o.nick}>.`,
     inv_track_s5: o => `Waiting for <${o.nick}> to join this private chat.`,
+    //command:
+    cmd_remark: 'set a alias for current chat',
+    cmd_clear: 'Clear history of current chat',
+    cmd_leave: 'Leave the current chat',
+    cmd_exit: 'Exit the current chat after clearing history',
   },
   zh: {
     //setting:
@@ -100,7 +110,10 @@ export const lang = {
     img: o =>`已选择${o.num}张图片`,
     file: o =>`已选择${o.num}份文件`,
     media_not_support: '媒体设备不支持此功能',
-    no_chat_tip: `请<a href='/' class='navi'>邀请</a> 某人以开启聊天.`,
+    no_chat_tip: `请 <a href='/' class='navi'>邀请</a> 某人以开启聊天.`,
+    ws_rec: '服务器连接中...',
+    ws_rec_fail: '无法连接, 请刷新页面重试.',
+    offline: o => `${o.nick} 已离线, 离线消息会在用户上线后重新发送.`,
     //invitation:
     lnk_copied: '邀请链接已复制到剪贴板.',
     inv_lnk: '复制并分享此邀请链接',
@@ -114,9 +127,17 @@ export const lang = {
     accept: '接受',
     decline: '拒绝',
     inv_cancel: '取消聊天',
+    inv_used: '邀请链接是一次性的，且已经使用过.',
+    inv_self: '对不起, 您不能邀请自己.',
     inv_cancel_confirm: '取消此次聊天，下次聊天需重新邀请，是否继续？',
     share_tit: '~ 匿名加密聊天邀请 ~',
     share_body: o => `您收到来自<${o.nick}>的私聊邀请.`,
     inv_track_s5: o => `等待<${o.nick}>上线后开启聊天.`,
+    //command:
+    cmd_remark: '为当前聊天设置别名',
+    cmd_clear: '清除当前聊天的历史',
+    cmd_leave: '离开当前聊天',
+    cmd_exit: '离开当前聊天并删除历史',
+    cmd_help: '使用说明',
   }
 };

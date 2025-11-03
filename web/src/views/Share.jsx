@@ -52,7 +52,7 @@ function Share() {
     <>
       <Header/>
       <div class="page_block" >
-        <h5>~ # {L('invitation')} # ~</h5> <br/>
+        <h5>~ # {L('invitation')} # ~</h5>
         <p>
         <Lnk name={L('share')} bind={async ()=> await init_chat_inv()} class="navi"/> {L('share_inv_tip')}
         </p>

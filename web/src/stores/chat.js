@@ -23,7 +23,7 @@ export const priv_chats = () => {
 export const priv_chat = (kid) => {
   return chat_ctx.priv_chats.find(pc => pc.kid == kid);
 }
-export function save_priv_chat(chat) {
+export async function save_priv_chat(chat) {
   let priv_chats = chat_ctx.priv_chats;
   let idx = priv_chats.findIndex(pc => pc.kid == chat.kid);
   if(idx > -1) {
@@ -31,23 +31,24 @@ export function save_priv_chat(chat) {
   }else{
     $chat_ctx('priv_chats', chats=>[...chats, chat]);
   }
-  PrivChat.save(chat_ctx.priv_chats);
+  await PrivChat.save(chat_ctx.priv_chats);
 }
-export function update_priv_chat(kid, state) {
+//update or delete
+export async function update_priv_chat(kid, state) {
   if(state == 2 || state == 3 || state == 4) { //decline
     $chat_ctx('priv_chats', chats=>chats.filter(c=>c.kid != kid)); //remove
   }else{ //agree or other
     $chat_ctx('priv_chats', c=>c.kid == kid, 'state', state);
   }
   let curr_room = chat_ctx.curr_room;
-  if(curr_room.type == 1 && curr_room.kid == kid) { // when curr_room is priv_chat, should refresh room
+  if(curr_room.kid == kid) { // when curr_room is priv_chat, should refresh room
     if(state == 2 || state == 3 || state == 4) { // decline
       $chat_ctx('curr_room', first_chat()); 
     }else{ //agree
       $chat_ctx('curr_room', "state", state);  //trigger room() effect!
     }
   }
-  PrivChat.save(chat_ctx.priv_chats);
+  await PrivChat.save(chat_ctx.priv_chats);
 }
 export const remark_priv_chat = async (kid, alias) => {
   let updated_priv_chats = await PrivChat.remark(kid, alias);
@@ -58,7 +59,7 @@ export const room = () => {
 }
 export function room_id(rm) {
   rm = rm || (chat_ctx.curr_room); //stop tracking
-  return rm.type == 0 ? rm.id : rm.kid;
+  return rm.kid;
 }
 export const first_chat = () => {
   return priv_chats()[0]
