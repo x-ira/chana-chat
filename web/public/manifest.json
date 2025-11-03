@@ -6,7 +6,7 @@
   "scope":"/",
   "icons": [
     {
-      "src": "app.jpg",
+      "src": "/app.jpg",
       "sizes": "640x640"
     }
   ]
