@@ -124,13 +124,28 @@ footer{
 }
 .msg_block{
   border: 1px dashed #c39dcb;
-  background: #a7f1ee;
+  /* background: #a7f1ee; */
+  background: linear-gradient(135deg, #55d2ff, #33b0bd, #65e2c2, #1aaed4);
+  background-size: 400% 400%; /* Makes the gradient larger for movement */
+  animation: colorShift 15s ease infinite;
   font-size: 13px;
   margin: 5px  7px;
   padding: 7px;
   min-height: 350px;
   max-height: 500px;
   overflow-y: scroll;
+}
+
+@keyframes colorShift {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 0%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
 }
 .msg{
   overflow:hidden;

@@ -34,9 +34,10 @@ function RoomChat(props) {
   let skid = dsa.skid;
   let params = url_params();
   let msg_block; //el
+  let msg_container;
   let wsc;
   let endpoint = `/ws/${nick}/k/${b64_url(dsa.verify_key)}`;
-
+  
   const engagement = async ()=> {
     let decision = await find('inv_decide', meta);
     if(decision) {
@@ -260,15 +261,6 @@ function RoomChat(props) {
       wsc.emit(ws_msg);
     });
   }
-  onMount(()=>{
-    init_wsc();
-    if(notify.isSupported()) {
-      notify.requestPermission();
-    }
-  });
-  onCleanup(() =>{
-    if(wsc) wsc.close();
-  });
   createEffect((rmk) =>{
     if(!room()) return;
     if(room().rmk != rmk) { //rmk change means room changed!!
@@ -281,6 +273,15 @@ function RoomChat(props) {
       msg_block.scrollTop = msg_block.scrollHeight;
     }
   });
+  onMount(()=>{
+    init_wsc();
+    if(notify.isSupported()) {
+      notify.requestPermission();
+    }
+  });
+  onCleanup(() =>{
+    if(wsc) wsc.close();
+  });
    return (
      <>
     <Switch>
@@ -292,7 +293,7 @@ function RoomChat(props) {
         { conn_state() && 
         <div class="conn_state">{conn_state}</div>
         }
-        <div class="msg_block" ref={msg_block}>
+        <div class="msg_block" ref={msg_block} >
         <Show when={rest_len()} >
           <div class="info"><Lnk bind={history_msgs} name={`~ More History (${rest_len()}) ~`} /></div>
         </Show>
