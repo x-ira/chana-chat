@@ -117,7 +117,7 @@
 }
 
 .topbar-label {
-  margin-left: 0.25rem;
+  /* margin-left: 0.25rem; */
   font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
