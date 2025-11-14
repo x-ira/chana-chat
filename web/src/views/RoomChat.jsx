@@ -300,10 +300,9 @@ function RoomChat(props) {
         <For each={msgs}>{ (m,i) =>
           <>
             <div class="msg"> 
-              <Show when={u8_b64(m.kid) != skid } >{m.nick}: </Show>
               <Switch>
                 <Match when={m.kind == 'Txt'} >
-                   <div class={`${m_io(m)} txt`}><span class="m_cont">{m.cont}</span></div>
+                   <div class={`${m_io(m)} txt`}><div class="m_cont">{m.cont}</div></div>
                 </Match>
                 <Match when={m.kind != 'Txt'} >
                   <MediaMsg m={m} blob_urls={blob_urls} />
@@ -312,7 +311,7 @@ function RoomChat(props) {
             </div>
             <div class="info">
               <Show when={break_time(m.ts, i(), msgs)} fallback={<>&nbsp;</>}>
-                <span>{Time.iso(m.ts)}</span>
+                <div class="ts">{Time.iso(m.ts)}</div>
               </Show>
             </div>
           </>
