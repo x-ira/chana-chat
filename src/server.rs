@@ -4,14 +4,13 @@ use dashmap::DashMap;
 use tower_http::services::{ServeDir, ServeFile};
 use base::db::Store;
 
-use crate::{err::AppResult, router::{self, ws::{INVITATION_TBL, TEMP_MEDIA_TBL, TEMP_PRIV_TBL}, AppCtx}};
+use crate::{err::AppResult, router::{self, ws::{INVITATION_TBL, TEMP_PRIV_TBL}, AppCtx}};
 
 pub async fn start_chat_server(app_name: &str, port:u16, store: Arc<Store>) -> AppResult<()>{
     let listen_on: String = format!("0.0.0.0:{port}");
     
     //init to avoid find fail 
     store.save_in(INVITATION_TBL, "", &0)?;
-    store.save_in(TEMP_MEDIA_TBL, "", &0)?;
     store.save_in(TEMP_PRIV_TBL, "", &0)?;
     
     let state = Arc::new(AppCtx{

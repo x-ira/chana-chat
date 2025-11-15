@@ -58,17 +58,18 @@ where
     
 }
 impl WsMsg {
-    fn hash(&self) -> Option<u64> {
+    pub fn hash(&self) -> Option<u64> {
         let mut hasher = DefaultHasher::new();
         match self {
             WsMsg::PrivChat { kid, msg } => {
                 msg.hash(&mut hasher);
                 kid.hash(&mut hasher);
             },
-            WsMsg::Media { kid, by_kid, id, .. } => {
+            WsMsg::Media { kid, by_kid, id, cont_type, .. } => {
                 kid.hash(&mut hasher);
                 by_kid.hash(&mut hasher);
                 id.hash(&mut hasher);
+                cont_type.hash(&mut hasher);
             },
             _ => { return None}
         }

@@ -1,5 +1,7 @@
-use std::sync::Arc;
-use base::db::Store;
+use std::{fs::{self, File}, io::{Read, Write}, sync::Arc};
+use base::db::{Serializable, Store};
+use air::conf::cfg;
+use base64ct::{Base64Url, Encoding};
 use futures::SinkExt;
 use tokio::sync::mpsc::{self};
 use futures::stream::{SplitSink, StreamExt};
@@ -12,7 +14,6 @@ use super::AppCtx;
 const USER_CH_SIZE: usize = 100;
 pub const INVITATION_TBL: &str = "Invitation";
 pub const TEMP_PRIV_TBL: &str = "Temp-Priv-Chat";
-pub const TEMP_MEDIA_TBL: &str = "Temp-Media";
 
 pub type UserTxs = dashmap::DashMap<Kid, mpsc::Sender<WsMsg>>;
 
@@ -45,6 +46,25 @@ async fn handle_socket(socket: WebSocket, state: Arc<AppCtx>, nick: String, kid_
     let token = CancellationToken::new();
     
     state.user_txs.insert(kid_buf, i_tx.clone());
+    
+    let mut send_cached_medias = async || {
+        let kid_res_path = get_media_path(&kid_buf)?;
+        let entries = fs::read_dir(&kid_res_path)?;
+        for entry in entries {
+            let en = entry?;
+            if en.path().is_file() {
+                let mut file = fs::File::open(en.path())?;
+                let mut buf = Vec::new();
+                file.read_to_end(&mut buf)?;
+                let media_msg = WsMsg::from_bytes(&buf);
+                send_to_client(&media_msg, &mut sender).await;
+            }
+        }
+        fs::remove_dir_all(kid_res_path)?; //clear media caches for kid
+        AppResult::Ok(())
+    };
+    send_cached_medias().await.expect("send cached media msgs failed");
+    
     //send cached msgs
     let mut send_cached_msgs = async |tbl: &str| {
         if let Ok(cached_msgs) = state.store.find_in::<Vec<WsMsg>>(tbl, &kid_local){
@@ -56,7 +76,7 @@ async fn handle_socket(socket: WebSocket, state: Arc<AppCtx>, nick: String, kid_
             } 
         }
     };
-    for tbl in [INVITATION_TBL, TEMP_PRIV_TBL, TEMP_MEDIA_TBL] {
+    for tbl in [INVITATION_TBL, TEMP_PRIV_TBL] { // cached msg should send after cached media!! 
         send_cached_msgs(tbl).await;
     }
     
@@ -92,8 +112,8 @@ async fn handle_socket(socket: WebSocket, state: Arc<AppCtx>, nick: String, kid_
                         WsMsg::Media { ref kid,  .. } => { //only for priv-chat currently
                             // println!("Media Msg:{kid}");
                             if let Some(kid_tx) = state.user_txs.get(kid){
-                                if kid_tx.send(ws_msg.clone()).await.is_err() { break }
-                            }else if cache_msg(&state.store, TEMP_MEDIA_TBL, &u8_b64(kid),  ws_msg).is_err() { break }
+                                if kid_tx.send(ws_msg).await.is_err() { break }
+                            }else if cache_media(kid, &ws_msg).is_err() { break }
                         }
                         WsMsg::PrivChat { ref kid,  ..  } => {
                             if i_tx.send(ws_msg.clone()).await.is_err() { break } //send to me
@@ -135,6 +155,20 @@ async fn send_to_client(msg: &WsMsg, sender: &mut SplitSink<WebSocket,Message>) 
         },
     }
     true
+}
+/// if hash same, then treat as same media
+fn cache_media(kid: &Kid, ws_msg: &WsMsg) -> AppResult<()>{
+    if let Some(media_id) = ws_msg.hash(){
+        let dist_file = format!("{}/{media_id}", get_media_path(kid)?);
+        let mut file = File::create(dist_file.clone())?;
+        file.write_all(&ws_msg.to_bytes())?;
+    }
+    Ok(())
+}
+fn get_media_path(kid: &Kid) -> AppResult<String> {
+    let path = format!("{}/{}", cfg::<String>("app.res_path"), Base64Url::encode_string(kid)); //safe b64
+    fs::create_dir_all(path.clone())?;
+    Ok(path)
 }
 fn cache_msg(store: &Store, tbl: &str, kid_b64: &str, ws_msg: WsMsg) -> AppResult<()>{
     match store.find_in::<Vec<WsMsg>>(tbl, kid_b64) {

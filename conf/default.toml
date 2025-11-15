@@ -2,6 +2,7 @@
 name = "Chana"
 lan_port = 7788
 wan_port = 2010
+res_path = "res"
 
 [log]
 level="info"
