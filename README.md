@@ -10,7 +10,7 @@ Anonymous encrypted chat app, one to one, mobile ready, simple &amp; elegant.
 ![en-slash-cmd](./doc/screenshots/en-slash-cmd.png)
 
 - i18n support & dark theme & mobile ready
-![mob-chat](./doc/screenshots/mob-chat.png)
+![mob-chat](./doc/screenshots/mob-chat-b.png)
 
 - settings
 ![setting-dark](./doc/screenshots/setting-dark.png)
