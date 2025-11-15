@@ -3,7 +3,7 @@ import { createStore } from 'solid-js/store';
 import WebSocketClient from '../utils/ws';
 import _ from '../utils/notification';
 import { Time,get,upload_files, b64_u8, b64_url, u8_b64, b64_url_u8, b64_std } from '../utils/app';
-import { Cipher, InvKey, PrivChat, break_time, ecdh_exchange, expire_ecdh, msg_room, nick_name, url_params } from '../utils/main';
+import { Cipher, PrivChat, break_time, ecdh_exchange, expire_ecdh, msg_room, nick_name, url_params } from '../utils/main';
 import { room, rmk, save_priv_chat, update_priv_chat, priv_chat, room_id, remark_priv_chat } from '../stores/chat';
 import { set, get as find, setMany, del, keys, delMany } from 'idb-keyval';
 import { nanoid } from 'nanoid';
@@ -29,27 +29,19 @@ function RoomChat(props) {
   let [conn_state, $conn_state] = createSignal(); 
   let [msgs, $msgs] = createStore([]);
   let [cmd_output, $cmd_output] = createSignal();
+  let endpoint = `/ws/${nick}/k/${b64_url(dsa.verify_key)}`;
+  let params = url_params();
   let blob_urls = [];
   let kid = dsa.kid;
   let skid = dsa.skid;
-  let params = url_params();
   let msg_block; //el
   let msg_container;
   let wsc;
-  let endpoint = `/ws/${nick}/k/${b64_url(dsa.verify_key)}`;
   
-  const engagement = async ()=> {
-    let decision = await find('inv_decide', meta);
-    if(decision) {
-      wsc.emit(decision);
-      await del('inv_decide', meta);
-    }
-  }
   const init_wsc = () =>{
     wsc = new WebSocketClient(endpoint);
     wsc.on('#connected', async ()=>{ //refresh room after (re)connected
      $conn_state();
-     await engagement();
     });
     wsc.on('#reconnecting', ({attempt}) => {
       $conn_state(L('ws_rec'), attempt);
@@ -90,7 +82,7 @@ function RoomChat(props) {
         delete media.data;
         set(key, media).catch(e=>console.error(e));
       }else if(ws_msg.Engagement) {
-        let eng = ws_msg.Engagement; 
+        let eng = ws_msg.Engagement;
         if(!engagement_verify(eng)) return; // verify sign
         let rmk = await ecdh_exchange(eng.pub_key, eng.by_pub_key, true);
         let state = 3; // missing or expired pub_key
@@ -104,8 +96,6 @@ function RoomChat(props) {
              notify.show('Chànà-Chat',`${eng.by_nick} has accepted the Priv-Chat invitation.`);
           }
         }
-        let it = await inv_track_sign(eng.by_kid, eng.by_nick, state); //inform partner, expired Or success
-        wsc.emit({InviteTracking:it});
       }else if(ws_msg.InviteTracking) {
         let it = ws_msg.InviteTracking;
         if(!inv_track_verify(it)) return; // verify track sign
@@ -120,7 +110,7 @@ function RoomChat(props) {
         if(it.state == 4) cont = `${it.by_nick} has cancelled the Priv-Chat invitation.`;
         if(it.state == 9) cont = `${it.by_nick} has accepted your Priv-Chat invitation.`;
         if(cont) {
-         notify.show('Chànà-Chat', cont);
+           notify.show('Chànà-Chat', cont);
         }
         await update_priv_chat(u8_b64(it.by_kid), it.state);
       }else if(ws_msg.Rsp) {
@@ -152,8 +142,8 @@ function RoomChat(props) {
     clean_room();
     history_msgs();
   }
-  const chat_msg = (kind, cont, wisper) => { // parepared, No cont
-    let msg = {nick, kind, ts: Time.ts(), kid, cont: rmk().enc_u8(cont), wisper };
+  const chat_msg = (kind, cont) => { // parepared, No cont
+    let msg = {nick, kind, ts: Time.ts(), kid, cont: rmk().enc_u8(cont) };
     return {PrivChat: {kid: b64_u8(room().kid), msg}};
   }
   const handle_input_msg = (cmd, params, send_at_once) => {
@@ -196,8 +186,8 @@ function RoomChat(props) {
     $txt_cmd(null); //clear
     return [new_msg];
   }
-  const txt_msg = (cont, wisper) =>{
-    return !cont ? [] : chat_msg('Txt', cont, wisper);
+  const txt_msg = (cont) =>{
+    return !cont ? [] : chat_msg('Txt', cont);
   }
   const blob_conts = async (blobs) => {
     let srcs = [];

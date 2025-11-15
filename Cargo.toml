@@ -13,7 +13,6 @@ air = { path = "air", package = "air" }
 base = { path = "base", package = "base", features = ["req"] }
 
 log = "^0.4"
-
 axum = { version = "^0.8", features = ["ws","multipart"] }
 tower-http = { version = "^0.6", features = ["fs"] }
 

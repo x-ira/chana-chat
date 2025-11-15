@@ -3,7 +3,7 @@ import { Btn } from '../comps/Form';
 import { Footer, Header } from '../comps/Base';
 import { url_params, PrivChat, InvKey, nick_name, ecdh_exchange } from '../utils/main';
 import { L } from '../utils/languages';
-import { b64_std, b64_u8, b64_url_u8, u8_b64 } from '../utils/app';
+import { b64_std, b64_u8, b64_url_u8, post, u8_b64 } from '../utils/app';
 import { priv_chat, save_priv_chat, update_priv_chat } from '../stores/chat';
 import { set } from 'idb-keyval';
 import { engagement_sign, inv_track_sign } from '../comps/ChatHelper';
@@ -39,11 +39,17 @@ function PrivChatInv() {
     let eng = await engagement_sign(skid_std, kid, pub_key, nick); //always allow invite
     let rmk = await ecdh_exchange(skid_std, pub_key, true);
     await save_priv_chat({
-      kid: skid_std, nick: by_nick, state: 5, type: 1, rmk:u8_b64(rmk), ts: eng.ts
+      kid: skid_std, nick: by_nick, state: 9, type: 1, rmk:u8_b64(rmk), ts: eng.ts
     });
     await InvKey.save(pk);
-    await set('inv_decide', {Engagement: eng}, meta);
-    navigate(`/chat`);
+    let invitation = {
+      kid: u8_b64(eng.kid), by_kid: u8_b64(eng.by_kid), pub_key: u8_b64(eng.pub_key),
+      by_pub_key: u8_b64(eng.by_pub_key), by_nick: eng.by_nick, sign: u8_b64(eng.sign), ts: eng.ts
+    };
+    let rsp = await post('/ws/eng', invitation);
+    if(rsp) {
+      navigate(`/chat`);
+    }
   }
   return (
     <>

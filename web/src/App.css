@@ -1,7 +1,6 @@
 .App {
   text-align: center;
 }
-
 td {
   text-align: center;
 }
@@ -125,7 +124,7 @@ footer{
 .msg_block{
   border: 1px dashed #c39dcb;
   /* background: #a7f1ee; */
-  background: linear-gradient(135deg, #55d2ff, #33b0bd, #65e2c2, #1aaed4);
+  background: linear-gradient(135deg, #55d2ff, #13a7cd, #51cac7, #33b0bd);
   background-size: 400% 400%; /* Makes the gradient larger for movement */
   animation: colorShift 15s ease infinite;
   font-size: 13px;

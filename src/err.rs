@@ -7,6 +7,7 @@ pub enum AppErr {
     UploadFail(String),
     StoreAccessErr(String),
     EncodingErr(String),
+    ChannelErr(String),
 }
 impl IntoResponse for AppErr {
     fn into_response(self) -> axum::response::Response {
@@ -15,6 +16,7 @@ impl IntoResponse for AppErr {
             AppErr::StoreAccessErr(e) => e,
             AppErr::UploadFail(e) => e,
             AppErr::EncodingErr(e) => e,
+            AppErr::ChannelErr(e) => e,
         };
         (code, msg).into_response()
     }
@@ -32,5 +34,10 @@ impl From<MultipartError> for AppErr {
 impl From<std::io::Error> for AppErr{
     fn from(err: std::io::Error) -> Self {
       Self::UploadFail(err.to_string())
+    }
+}
+impl<T> From<tokio::sync::mpsc::error::SendError<T>> for AppErr {
+    fn from(err: tokio::sync::mpsc::error::SendError<T>) -> Self {
+        Self::ChannelErr(err.to_string())
     }
 }

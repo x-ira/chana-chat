@@ -3,9 +3,9 @@ use base::db::Store;
 use futures::SinkExt;
 use tokio::sync::mpsc::{self};
 use futures::stream::{SplitSink, StreamExt};
-use axum::{extract::{ws::{Message, WebSocket}, Path, State, WebSocketUpgrade}, response::Response, routing::{any, get}, Router};
+use axum::{extract::{ws::{Message, WebSocket}, Path, State, WebSocketUpgrade}, response::Response, routing::{any, get, post}, Json, Router};
 use tokio_util::sync::CancellationToken;
-use crate::{err::AppResult, model::{Kid, SvcRsp}, util::{b64_url_u8_32, u8_b64}};
+use crate::{err::AppResult, model::{Invitation, Kid, SvcRsp}, util::{b64_url_u8_32, u8_b64}};
 use crate::model::WsMsg;
 use super::AppCtx;
 
@@ -18,8 +18,19 @@ pub type UserTxs = dashmap::DashMap<Kid, mpsc::Sender<WsMsg>>;
 
 pub fn router() -> Router<Arc<AppCtx>> {
     Router::new()
-        .route("/hi", get(|| async { "Hello, World!" }))
+        .route("/hi", get(|| async { "Welcome to Chana-Chat!" }))
+        .route("/eng", post(engaged))
         .route("/{nick}/k/{kid}", any(ws_handler))
+}
+async fn engaged(State(state): State<Arc<AppCtx>>, Json(inv): Json<Invitation>) -> AppResult<()> {
+    let kid = inv.kid;
+    let ws_msg: WsMsg = inv.into();
+    if let Some(kid_tx) = state.user_txs.get(&kid){ //online
+        kid_tx.send(ws_msg).await?;
+    }else { //offline, should cached invitation msg for better user experience
+        cache_msg(&state.store, INVITATION_TBL, &u8_b64(&kid), ws_msg)?;
+    }
+    Ok(())
 }
 async fn ws_handler(ws: WebSocketUpgrade, State(state): State<Arc<AppCtx>>, Path((nick,kid)): Path<(String,String)>) -> Response {
     ws.on_upgrade(move |socket| handle_socket(socket, state, nick, kid))
@@ -34,11 +45,10 @@ async fn handle_socket(socket: WebSocket, state: Arc<AppCtx>, nick: String, kid_
     let token = CancellationToken::new();
     
     state.user_txs.insert(kid_buf, i_tx.clone());
-
     //send cached msgs
     let mut send_cached_msgs = async |tbl: &str| {
-        if let Ok(cached_inv_msgs) = state.store.find_in::<Vec<WsMsg>>(tbl, &kid_local){
-            for ws_msg in cached_inv_msgs {
+        if let Ok(cached_msgs) = state.store.find_in::<Vec<WsMsg>>(tbl, &kid_local){
+            for ws_msg in cached_msgs {
                 send_to_client(&ws_msg, &mut sender).await;
             }
             if let Err(e) = state.store.remove_in(tbl, &kid_local) { //clear
@@ -94,7 +104,7 @@ async fn handle_socket(socket: WebSocket, state: Arc<AppCtx>, nick: String, kid_
                                 if i_tx.send(WsMsg::Rsp(SvcRsp::Offline)).await.is_err() { break }
                             }
                         },
-                        WsMsg::InviteTracking { ref kid, .. } | WsMsg::Engagement { ref kid, .. } => {
+                        WsMsg::InviteTracking { ref kid, .. } => {
                             if let Some(kid_tx) = state.user_txs.get(kid){ //online
                                  if kid_tx.send(ws_msg.clone()).await.is_err() { break }
                             }else { //offline, should cached invitation msg for better user experience
