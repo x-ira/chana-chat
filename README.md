@@ -3,6 +3,8 @@ Anonymous encrypted chat app, one to one, mobile ready, simple &amp; elegant.
 
 ### [中文介绍](./README_CN.md)
 
+### Demo: [Chànà - क्षण](https://wiza.top:99/)
+
 ### Screenshots
 - simple & distraction free ui & slash command supported
 ![en-slash-cmd](./doc/screenshots/en-slash-cmd.png)
